@@ -4,6 +4,10 @@ This is the README for your extension "baekjoon-vscode". After writing up a brie
 
 ## Features
 
+- 테스트케이스 자동 점검
+- 코드 템플릿 적용
+- 정답 코드 제출
+
 Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
 
 For example if there is an image subfolder under your extension project workspace:
@@ -13,6 +17,10 @@ For example if there is an image subfolder under your extension project workspac
 > Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
 
 ## Requirements
+
+- selenium-webdriver: ^4.21.0
+- chrome: 125.0.6422.112
+- g++: 13.2.0 
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
