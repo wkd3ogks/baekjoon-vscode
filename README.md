@@ -1,5 +1,7 @@
 # baekjoon-vscode README
 
+Baekjoon Online Judge를 활용해 알고리즘을 학습하는데 있어 여러 편의사항을 제공하는 Visual Studio Code 확장 프로그램. 
+
 This is the README for your extension "baekjoon-vscode". After writing up a brief description, we recommend including the following sections.
 
 ## Features
