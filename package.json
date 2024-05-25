@@ -22,12 +22,12 @@
         "title": "Baekjoon: Search"
       },
       {
-        "command": "baekjoon-vscode.run",
-        "title": "Baekjoon: Run"
+        "command": "baekjoon-vscode.run_testcase",
+        "title": "Baekjoon: Run Testcase"
       },
       {
-        "command": "baekjoon-vscode.testcase",
-        "title": "Baekjoon: Testcase"
+        "command": "baekjoon-vscode.load_testcase",
+        "title": "Baekjoon: Load Testcase"
       },
       {
         "command": "baekjoon-vscode.submit",
@@ -42,7 +42,7 @@
         "title": "Baekjoon: New Problem"
       },
       {
-        "command": "baekjoon-vscode.template_code",
+        "command": "baekjoon-vscode.load_template",
         "title": "Baekjoon: Load Template"
       }
     ]
