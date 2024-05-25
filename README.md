@@ -26,6 +26,21 @@ For example if there is an image subfolder under your extension project workspac
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
 
+## Source files
+    .
+    │
+    ├── ...
+    ├── src                
+    │   ├── commands        
+            ├── project.js      # 프로젝트 관리 코드  
+            ├── baekjoon.js     # 백준 사이트와 상호작용하는 코드
+            ├── template.js     # 템플릿 관련 코드
+            └── testcase.js     # 테스트케이스 관련 코드
+    │   └── extends.js          # 메인 코드
+    ├── package.json            # 패키지 관리
+    └── ...
+
+
 ## Extension Settings
 
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
