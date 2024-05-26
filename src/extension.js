@@ -4,16 +4,20 @@ const baekjoon = require('./commands/baekjoon');
 const testcase = require('./commands/testcase');
 const template = require('./commands/template');
 const project = require('./commands/project');
+const { env, platform } = require('process');
+
+
 async function activate(context) {
 	console.log('baekjoon-vscode is now active');
-
 	/* 
 	TODO 24.05.27
 		1. 컴파일, 실행, 제출 관련 설정 만들기.
 		2. 제출 코드 정리하기
 		3. debug extension 추가
+		4. user_data_dir 값 수정(설정 파일에 넣기)
 	*/
-
+	if(platform == 'win32') context.globalState.update("user_data_dir", `${env.LOCALAPPDATA}\Google\Chrome\User Data\Default`);
+	
 	// baekjoon.js
 	vscode.commands.registerCommand('baekjoon-vscode.login', baekjoon.login, context);
 	vscode.commands.registerCommand('baekjoon-vscode.logout', baekjoon.logout, context);

@@ -10,7 +10,7 @@ async function login() {
     let options = new Chrome.Options();
     //options.addArguments("--headless=new");
     let user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36';
-    options.addArguments('user-agent='+user_agent, '--user-data-dir=/Users/aksworns2/Library/Application Support/Google/Chrome/Default', '--profile-directory=Default');
+    options.addArguments('user-agent='+user_agent, '--user-data-dir=C:\\Users\\wkdeo\\AppData\\Local\\Google\\Chrome\\User Data\\Default', '--profile-directory=Default');
     let driver = await new Builder().forBrowser(Browser.CHROME)
     .setChromeOptions(options)
     .build()
