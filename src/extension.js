@@ -11,6 +11,7 @@ async function activate(context) {
 	TODO 24.05.27
 		1. 컴파일, 실행, 제출 관련 설정 만들기.
 		2. 제출 코드 정리하기
+		3. debug extension 추가
 	*/
 
 	// baekjoon.js
