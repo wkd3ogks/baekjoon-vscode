@@ -8,9 +8,9 @@ async function activate(context) {
 	console.log('baekjoon-vscode is now active');
 
 	/* 
-	TODO 24.05.26
-		1. 컴파일, 실행 설정 만들기.
-		2. 제출 만들기.
+	TODO 24.05.27
+		1. 컴파일, 실행, 제출 관련 설정 만들기.
+		2. 제출 코드 정리하기
 	*/
 
 	// baekjoon.js
