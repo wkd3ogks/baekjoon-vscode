@@ -10,7 +10,7 @@ const { env, platform } = require('process');
 async function activate(context) {
 	console.log('baekjoon-vscode is now active');
 	/* 
-	TODO 24.05.27
+	TODO 24.05.28
 		0. 로그아웃 정리
 		1. 제출 코드 정리하기
 		2. user_data_dir 값 수정(설정 파일에 넣기)
