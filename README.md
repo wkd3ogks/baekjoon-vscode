@@ -36,6 +36,7 @@ If you have any requirements or dependencies, add a section describing those and
             ├── baekjoon.js     # 백준 사이트와 상호작용하는 코드
             ├── template.js     # 템플릿 관련 코드
             └── testcase.js     # 테스트케이스 관련 코드
+    │   ├── error.js            # 에러 관련 코드 
     │   └── extends.js          # 메인 코드
     ├── package.json            # 패키지 관리
     └── ...

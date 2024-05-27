@@ -1,3 +1,4 @@
+
 const vscode = require('vscode');
 const { Builder, Browser, By, until } = require('selenium-webdriver');
 const Chrome = require('selenium-webdriver/chrome');
@@ -5,54 +6,82 @@ const Chrome = require('selenium-webdriver/chrome');
 const { platform } = require('process'); // 운영체제 정보 받아오기
 const clipboard = require("copy-paste");
 
+const error = require('../error.js');
+
 async function login() {
-    // The code you place here will be executed every time your command is executed
+
     let options = new Chrome.Options();
-    //options.addArguments("--headless=new");
-    let user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36';
-    options.addArguments('user-agent='+user_agent, `--user-data-dir=${this.globalState.get("user_data_dir")}`, '--profile-directory=Default');
+    options.addArguments(
+        `user-agent=${this.globalState.get("user_agent")}`,
+        `--user-data-dir=${this.globalState.get("user_data_dir")}`,
+        '--profile-directory=Default'
+    );
+
     let driver = await new Builder().forBrowser(Browser.CHROME)
     .setChromeOptions(options)
-    .build()
+    .build();
+
     try {
         await driver.get('https://www.acmicpc.net/login?next=%2F');
+        if(!(await driver.getCurrentUrl()).includes('/login')) {
+            throw Error(error.login.aleady_login.content)
+        }
         const actions =  driver.actions({async: true});
         await actions.move({origin: await driver.findElement(By.name('auto_login'))}).click().perform();
-        let username_element = await driver.wait(until.elementLocated(By.className("username")));
-        let username = await username_element.getText();
-        this.globalState.update("username", username);
-        vscode.window.showInformationMessage(this.globalState.get("username") + "님 환영합니다.");
         
+        let username = undefined;
+
+        await new Promise((resolve, reject) => {
+            let find_result = setInterval(async() => {
+                try {
+                    if((await driver.getCurrentUrl()).includes('error')) {
+                        clearInterval(find_result);
+                        reject()
+                    }
+                    username = await driver.findElement(By.className("username"));
+                    resolve({interval: find_result, username: await username.getText()});
+                } catch {
+                    console.log("결과를 찾는 중입니다.");
+                }
+            }, 100);
+        }).then((value) => { 
+            vscode.window.showInformationMessage(`${value.username}님 환영합니다.`);
+            clearInterval(value.interval);
+        }).catch(() => { throw Error(error.login.wrong_info.content) });
     } catch(err) {
-        console.error(err);
-        vscode.window.showErrorMessage('로그인에 실패했습니다.', '오류 제보하기');
-        this.globalState.update("username", undefined);
+        if(err.message == error.login.aleady_login.content) {
+            error.message(err.message);
+        } else if(err.message == error.login.wrong_info.content) {
+            error.message(error.login.wrong_info);
+        } else {
+            error.message(error.login.unexpected);
+        }
     } finally {
-        await driver.quit()
+        driver.quit();
     }
 }
 
 async function logout() {
     let options = new Chrome.Options();
-    options.addArguments("--headless=new");
-    let user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36';
-    options.addArguments('user-agent='+user_agent, '--user-data-dir=/Users/aksworns2/Library/Application Support/Google/Chrome/Default', '--profile-directory=Default');
+    options.addArguments(
+        `user-agent=${this.globalState.get("user_agent")}`,
+        `--user-data-dir=${this.globalState.get("user_data_dir")}`,
+        '--profile-directory=Default',
+        "--headless=new"
+    );
+
     let driver = await new Builder().forBrowser(Browser.CHROME)
     .setChromeOptions(options)
     .build();
     try {
-        if(this.globalState.get("username") == undefined) {
-            throw Error();
-        }
         await driver.get('https://www.acmicpc.net/');
         await driver.executeScript('document.getElementById("logout_form").submit();');
         vscode.window.showInformationMessage('성공적으로 로그아웃 되었습니다.');
         //this.globalState.update("username", undefined);
     } catch(err) {
-        console.log(err);
         vscode.window.showErrorMessage("로그아웃에 실패했습니다.");
     } finally {
-        await driver.quit()
+        await driver.quit();
     }
 }
 
