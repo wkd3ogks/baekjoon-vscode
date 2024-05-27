@@ -12,6 +12,16 @@
   "activationEvents": [],
   "main": "./src/extension.js",
   "contributes": {
+    "menus" : {
+      "editor/title/run": [
+        {
+          "command": "baekjoon-vscode.run_testcase"
+        },
+        {
+          "command": "baekjoon-vscode.submit"
+        }
+      ]
+    },
     "commands": [
       {
         "command": "baekjoon-vscode.login",
@@ -23,7 +33,11 @@
       },
       {
         "command": "baekjoon-vscode.run_testcase",
-        "title": "Baekjoon: Run Testcase"
+        "title": "Baekjoon: Run Testcase",
+        "icon": {
+          "light": "media/testcase_light.svg",
+          "dark": "media/testcase_dark.svg"
+        }
       },
       {
         "command": "baekjoon-vscode.load_testcase",
@@ -31,7 +45,11 @@
       },
       {
         "command": "baekjoon-vscode.submit",
-        "title": "Baekjoon: Submit"
+        "title": "Baekjoon: Submit",
+        "icon": {
+          "light": "media/submit_light.svg",
+          "dark": "media/submit_dark.svg"
+        }
       },
       {
         "command": "baekjoon-vscode.logout",
@@ -45,7 +63,18 @@
         "command": "baekjoon-vscode.load_template",
         "title": "Baekjoon: Load Template"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Baekjoon",
+      "properties": {
+        "제출.공개 범위": {
+          "type": "string",
+          "default": "맞았을 때만 공개",
+          "enum": ["맞았을 때만 공개", "공개", "비공개"],
+          "description": "백준 사이트에 제출한 소스 코드의 공개 여부를 설정합니다."
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",

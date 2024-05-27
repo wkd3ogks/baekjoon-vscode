@@ -11,13 +11,17 @@ async function activate(context) {
 	console.log('baekjoon-vscode is now active');
 	/* 
 	TODO 24.05.27
-		1. 컴파일, 실행, 제출 관련 설정 만들기.
-		2. 제출 코드 정리하기
-		3. debug extension 추가
-		4. user_data_dir 값 수정(설정 파일에 넣기)
+		1. 제출 코드 정리하기
+		2. user_data_dir 값 수정(설정 파일에 넣기)
+		n. 백준 프로젝트에만 제출, 테스트케이스 적용
 	*/
-	if(platform == 'win32') context.globalState.update("user_data_dir", `${env.LOCALAPPDATA}\Google\Chrome\User Data\Default`);
-	
+
+	// 플랫폼에 따른 user_data_dir 위치 지정 (셀레니움에서 쿠키 사용 목적) 
+	if(platform == 'win32') context.globalState.update("user_data_dir", `${env.LOCALAPPDATA}\\Google\\Chrome\\User Data\\Default`);
+	else if(platform == 'darwin') context.globalState.update("user_data_dir", `${env.HOME}/Library/Application Support/Google/Chrome/Default`);
+
+	console.log(vscode.workspace.getConfiguration('제출').get('공개 범위'));
+
 	// baekjoon.js
 	vscode.commands.registerCommand('baekjoon-vscode.login', baekjoon.login, context);
 	vscode.commands.registerCommand('baekjoon-vscode.logout', baekjoon.logout, context);

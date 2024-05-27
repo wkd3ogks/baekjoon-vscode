@@ -52,9 +52,9 @@ async function load(problem_number) {
 async function run() {
     let terminal = vscode.window.createTerminal('Run Testcase');
     let problem_number = vscode.window.activeTextEditor.document.fileName.split('/').slice(-1)[0].split('.')[0];
-    console.log(problem_number);
     try {
-        terminal.sendText('g++ main.cpp -o output');
+        terminal.show();
+        terminal.sendText(`g++ ${problem_number}.baekjoon.cpp -o output`);
         let testcase_size = parseInt(new TextDecoder().decode(await vscode.workspace.fs.readFile(
             vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-metadata`)
         )));
@@ -79,7 +79,7 @@ async function run() {
             for(let i = 1; i <= testcase_size; i++) {
                 let user_output = null;
 
-                terminal.sendText(`./output > ./.output/output${i}.txt`);
+                terminal.sendText(`./output > output${i}.txt`);
                 terminal.sendText(new TextDecoder().decode(await vscode.workspace.fs.readFile(
                     vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-${i}.input`)
                 )));
@@ -87,7 +87,7 @@ async function run() {
                     setTimeout(() => {
                         console.log("Running");
                         try {
-                            vscode.workspace.fs.readFile(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-${i}.output`))
+                            vscode.workspace.fs.readFile(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `output${i}.txt`))
                                 .then(read_file => {
                                     resolve(read_file);
                                 })
@@ -107,7 +107,7 @@ async function run() {
                     if(user_output.trim() != new TextDecoder().decode(
                         await vscode.workspace.fs.readFile(
                             vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri,
-                            `/.testcase/${problem_number}-${i}.output`
+                            `/.testcase/${problem_number}-${i}.output` 
                             )
                         )).trim()) {
                         return new Promise((resolve) => {
@@ -116,7 +116,6 @@ async function run() {
                                 vscode.window.showErrorMessage(`${testcase_size}개 중 ${i}번째를 확인중 오류를 확인했습니다`);
                             }, 1000);
                         });
-                        
                     }
                 }
         } 
