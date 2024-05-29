@@ -1,5 +1,5 @@
 const vscode = require('vscode');
-const { Builder, Browser, By, until } = require('selenium-webdriver');
+const { Builder, Browser, By } = require('selenium-webdriver');
 const Chrome = require('selenium-webdriver/chrome');
 
 const error = require('../error.js');

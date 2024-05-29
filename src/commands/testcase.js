@@ -6,23 +6,26 @@ async function load(problem_number) {
     if(problem_number == undefined) {
         problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
     }
-    let options = new Chrome.Options();
-    options.addArguments("--headless=new");
-    let user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36';
-    options.addArguments('user-agent='+user_agent, '--user-data-dir=/Users/aksworns2/Library/Application Support/Google/Chrome/Default', '--profile-directory=Default');
-    let driver = await new Builder().forBrowser(Browser.CHROME)
+    const options = new Chrome.Options();
+    options.addArguments(
+        `user-agent=${this.globalState.get("user_agent")}`,
+        `--user-data-dir=${this.globalState.get("user_data_dir")}`,
+        '--profile-directory=Default'
+    );
+
+    const driver = await new Builder().forBrowser(Browser.CHROME)
     .setChromeOptions(options)
     .build();
     try {
         await driver.get('https://www.acmicpc.net/problem/' + problem_number);
-        let testcases = await driver.findElements(By.className('sampledata'));
+        const testcases = await driver.findElements(By.className('sampledata'));
 
         await vscode.workspace.fs.writeFile(
             vscode.Uri.joinPath(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, '.testcase'),
             `${problem_number}-metadata`), new TextEncoder().encode((testcases.length / 2).toString())
         );
 
-        for(let i = 0; i < testcases.length; i+= 2) {
+        for(let i = 0; i < testcases.length; i += 2) {
             try {
                 if(!vscode.workspace.fs.isWritableFileSystem('file')) {
                     throw Error();
@@ -35,7 +38,7 @@ async function load(problem_number) {
                         vscode.Uri.joinPath(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, '.testcase'),
                         `${problem_number}-${(i / 2) + 1}.output`), new TextEncoder().encode(await testcases[i + 1].getText())
                     );
-                    vscode.window.showInformationMessage("성공적으로 파일을 생성했습니다.");
+                    vscode.window.showInformationMessage("성공적으로 테스트케이스를 로드했습니다.");
                 }
             } catch(e) {
                 console.log("Error!");
@@ -63,8 +66,6 @@ async function run() {
             title: "테스트 케이스 확인 ",
             cancellable: true
         }, async (progress, token) => {
-            
-
             token.onCancellationRequested(() => {
                 console.log("테스트케이스 확인 중단");
                 return new Promise((resolve) => {
