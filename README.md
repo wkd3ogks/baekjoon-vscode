@@ -21,7 +21,6 @@ For example if there is an image subfolder under your extension project workspac
 ## Requirements
 
 - selenium-webdriver: ^4.21.0
-- copy-paste: ^1.5.3
 - chrome: 125.0.6422.112
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
