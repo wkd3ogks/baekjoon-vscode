@@ -89,7 +89,6 @@
     "typescript": "^5.4.5",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.3.9",
-    "selenium-webdriver": "^4.21.0",
-    "copy-paste": "^1.5.3"
+    "selenium-webdriver": "^4.21.0"
   }
 }
