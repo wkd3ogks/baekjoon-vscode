@@ -45,12 +45,7 @@ If you have any requirements or dependencies, add a section describing those and
 
 Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
 
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+* `제출.공개범위`: 백준 사이트에 코드 제출 시 공개여부를 결정한다.
 
 ## Known Issues
 
