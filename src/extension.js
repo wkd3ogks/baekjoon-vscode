@@ -10,10 +10,9 @@ const { env, platform } = require('process');
 async function activate(context) {
 	console.log('baekjoon-vscode is now active');
 	/* 
-	TODO 24.05.28
+	TODO 24.05.30
 		0. 로그아웃 정리
 		1. 제출 코드 정리하기
-		2. user_data_dir 값 수정(설정 파일에 넣기)
 		n. 백준 프로젝트에만 제출, 테스트케이스 적용
 	*/
 
@@ -34,22 +33,20 @@ async function activate(context) {
 	
 	console.log(vscode.workspace.getConfiguration('제출').get('공개 범위'));
 
-	process.env["PATH"] += ':/Users/aksworns2';
-	console.log(process.env["PATH"]);
 	// baekjoon.js
 	vscode.commands.registerCommand('baekjoon-vscode.login', baekjoon.login, context);
-	vscode.commands.registerCommand('baekjoon-vscode.logout', baekjoon.logout, context);
 	vscode.commands.registerCommand('baekjoon-vscode.submit', baekjoon.submit, context);
 
 	// project.js
-	//vscode.commands.registerCommand('baekjoon-vscode.create_project', project.create);
+	vscode.commands.registerCommand('baekjoon-vscode.new_project', project.create);
 	vscode.commands.registerCommand('baekjoon-vscode.new_problem', project.new_problem);
 
 	// template.js
 	vscode.commands.registerCommand('baekjoon-vscode.load_template', template.load);
 
 	// testcase.js
-	vscode.commands.registerCommand('baekjoon-vscode.load_testcase', testcase.load);
+	vscode.commands.registerCommand('baekjoon-vscode.load_testcase', testcase.load, context);
+	vscode.commands.registerCommand('baekjoon-vscode.add_testcase', testcase.add, context);
 	vscode.commands.registerCommand('baekjoon-vscode.run_testcase', testcase.run);
 
 }

@@ -6,11 +6,13 @@ async function load(problem_number) {
     if(problem_number == undefined) {
         problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
     }
+    console.log(this.globalState);
     const options = new Chrome.Options();
     options.addArguments(
         `user-agent=${this.globalState.get("user_agent")}`,
         `--user-data-dir=${this.globalState.get("user_data_dir")}`,
-        '--profile-directory=Default'
+        '--profile-directory=Default',
+        "--headless=new"
     );
 
     const driver = await new Builder().forBrowser(Browser.CHROME)
@@ -22,7 +24,7 @@ async function load(problem_number) {
 
         await vscode.workspace.fs.writeFile(
             vscode.Uri.joinPath(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, '.testcase'),
-            `${problem_number}-metadata`), new TextEncoder().encode((testcases.length / 2).toString())
+            `${problem_number}.info`), new TextEncoder().encode((testcases.length / 2).toString())
         );
 
         for(let i = 0; i < testcases.length; i += 2) {
@@ -59,7 +61,7 @@ async function run() {
         terminal.show();
         terminal.sendText(`g++ ${problem_number}.baekjoon.cpp -o output`);
         let testcase_size = parseInt(new TextDecoder().decode(await vscode.workspace.fs.readFile(
-            vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-metadata`)
+            vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}.info`)
         )));
         await vscode.window.withProgress({
             location: vscode.ProgressLocation.Notification,
@@ -135,7 +137,50 @@ async function run() {
     }
 }
 
+async function add() {
+    let problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
+    const panel = vscode.window.createWebviewPanel(
+        'add_testcase', // Identifies the type of the webview. Used internally
+        '테스트케이스 추가', // Title of the panel displayed to the user
+        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+        {enableScripts: true} // Webview options. More on these later.
+      );
+      panel.webview.html = getWebviewContent(problem_number);
+
+      panel.webview.onDidReceiveMessage(
+        message => {
+            console.log(message);
+        },
+        undefined,
+        this.subscriptions
+      );
+
+}
+
+function getWebviewContent(problem_number) {
+    return `<!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <title>테스트케이스 추가</title>
+  </head>
+  <body>
+      <h1>${problem_number} 테스트 케이스 추가</h1>
+      <textarea id="input"></textarea>
+      <textarea id="output"></textarea>
+      <button>생성하기</button>
+    <script>
+        const vscode = acquireVsCodeApi();
+        const button = document.querySelector('button');
+        button.addEventListener('click', () => {
+            vscode.postMessage({input: document.querySelector('textarea').value})
+        });
+    </script>
+  </body>
+  </html>`;
+}
+
 module.exports = {
     load,
-    run
+    run,
+    add
 }

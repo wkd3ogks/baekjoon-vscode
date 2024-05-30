@@ -55,28 +55,6 @@ async function login() {
     }
 }
 
-async function logout() {
-    const options = new Chrome.Options();
-    options.addArguments(
-        `user-agent=${this.globalState.get("user_agent")}`,
-        `--user-data-dir=${this.globalState.get("user_data_dir")}`,
-        '--profile-directory=Default',
-        "--headless=new"
-    );
-    const driver = await new Builder().forBrowser(Browser.CHROME)
-    .setChromeOptions(options)
-    .build();
-    try {
-        await driver.get('https://www.acmicpc.net/');
-        await driver.executeScript('document.getElementById("logout_form").submit();');
-        vscode.window.showInformationMessage('성공적으로 로그아웃 되었습니다.');
-    } catch(err) {
-        vscode.window.showErrorMessage("로그아웃에 실패했습니다.");
-    } finally {
-        await driver.quit();
-    }
-}
-
 async function submit() {
     let problem_number = vscode.window.activeTextEditor.document.fileName.split('/').slice(-1)[0].split('.')[0];
     const options = new Chrome.Options();
@@ -176,6 +154,5 @@ async function submit() {
 
 module.exports = {
     login,
-    logout,
     submit,
 }

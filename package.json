@@ -20,6 +20,11 @@
         {
           "command": "baekjoon-vscode.submit"
         }
+      ],
+      "explorer/context": [
+        {
+          "command": "baekjoon-vscode.new_problem"
+        }
       ]
     },
     "commands": [
@@ -27,10 +32,6 @@
         "command": "baekjoon-vscode.login",
         "title": "Baekjoon: Login"
       }, 
-      {
-        "command": "baekjoon-vscode.view_problem",
-        "title": "Baekjoon: Search"
-      },
       {
         "command": "baekjoon-vscode.run_testcase",
         "title": "Baekjoon: Run Testcase",
@@ -42,6 +43,10 @@
       {
         "command": "baekjoon-vscode.load_testcase",
         "title": "Baekjoon: Load Testcase"
+      }, 
+      {
+        "command": "baekjoon-vscode.add_testcase",
+        "title": "Baekjoon: Add Testcase"
       },
       {
         "command": "baekjoon-vscode.submit",
@@ -52,8 +57,8 @@
         }
       },
       {
-        "command": "baekjoon-vscode.logout",
-        "title": "Baekjoon: Logout"
+        "command": "baekjoon-vscode.new_project",
+        "title": "Baekjoon: New Project"
       },
       {
         "command": "baekjoon-vscode.new_problem",
