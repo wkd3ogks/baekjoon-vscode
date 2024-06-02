@@ -24,6 +24,10 @@
       "explorer/context": [
         {
           "command": "baekjoon-vscode.new_problem"
+        },
+        {
+          "when": "resourceExtname== .cpp",
+          "command": "baekjoon-vscode.delete_problem"
         }
       ]
     },
@@ -63,6 +67,10 @@
       {
         "command": "baekjoon-vscode.new_problem",
         "title": "Baekjoon: New Problem"
+      },
+      {
+        "command": "baekjoon-vscode.delete_problem",
+        "title": "Baekjoon: Delete Problem"
       },
       {
         "command": "baekjoon-vscode.load_template",

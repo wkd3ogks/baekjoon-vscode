@@ -58,8 +58,8 @@ async function run() {
     let terminal = vscode.window.createTerminal('Run Testcase');
     let problem_number = vscode.window.activeTextEditor.document.fileName.split('/').slice(-1)[0].split('.')[0];
     try {
-        terminal.show();
-        terminal.sendText(`g++ ${problem_number}.baekjoon.cpp -o output`);
+        //terminal.show();
+        terminal.sendText(`g++ ${vscode.window.activeTextEditor.document.fileName} -o ./.output/${problem_number}`);
         let testcase_size = parseInt(new TextDecoder().decode(await vscode.workspace.fs.readFile(
             vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}.info`)
         )));
@@ -82,7 +82,7 @@ async function run() {
             for(let i = 1; i <= testcase_size; i++) {
                 let user_output = null;
 
-                terminal.sendText(`./output > output${i}.txt`);
+                terminal.sendText(`./.output/${problem_number} > ./.result/${problem_number}-${i}.txt`);
                 terminal.sendText(new TextDecoder().decode(await vscode.workspace.fs.readFile(
                     vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-${i}.input`)
                 )));
@@ -90,7 +90,7 @@ async function run() {
                     setTimeout(() => {
                         console.log("Running");
                         try {
-                            vscode.workspace.fs.readFile(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `output${i}.txt`))
+                            vscode.workspace.fs.readFile(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `./.result/${problem_number}-${i}.txt`))
                                 .then(read_file => {
                                     resolve(read_file);
                                 })
@@ -159,15 +159,46 @@ async function add() {
 
 function getWebviewContent(problem_number) {
     return `<!DOCTYPE html>
-  <html lang="en">
+  <html lang="ko">
   <head>
       <title>테스트케이스 추가</title>
+      <style>
+        html {
+            font-size: 16px;
+        }
+        .container {
+            width:100vw;
+        }
+        h5 {
+            margin-bottom: 0.5rem;
+        }
+        button {
+            width: 80vw;
+            height: 2rem;
+            background-color: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: 0;
+        }
+        textarea {
+            width: 80vw;
+            background: var(--vscode-editor-background);
+            color: var(--vscode-editor-foreground);
+        }
+      </style>
   </head>
   <body>
-      <h1>${problem_number} 테스트 케이스 추가</h1>
-      <textarea id="input"></textarea>
-      <textarea id="output"></textarea>
+    <div class="container">
+      <h2>${problem_number} 테스트 케이스 추가</h2>
+      <div>
+        <h5>입력</h5>
+        <textarea id="input"></textarea>
+      </div>
+      <div>
+        <h5>출력</h5>
+        <textarea id="output"></textarea>
+      </div>
       <button>생성하기</button>
+    </div>
     <script>
         const vscode = acquireVsCodeApi();
         const button = document.querySelector('button');

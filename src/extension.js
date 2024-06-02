@@ -11,7 +11,8 @@ async function activate(context) {
 	console.log('baekjoon-vscode is now active');
 	/* 
 	TODO 24.05.30
-		0. 로그아웃 정리
+		0. 파일 생성 시 템플릿 자동 생성
+		0. 문제 삭제 시 테스트케이스 및 실행 파일 같이 삭제.
 		1. 제출 코드 정리하기
 		n. 백준 프로젝트에만 제출, 테스트케이스 적용
 	*/
@@ -40,6 +41,7 @@ async function activate(context) {
 	// project.js
 	vscode.commands.registerCommand('baekjoon-vscode.new_project', project.create);
 	vscode.commands.registerCommand('baekjoon-vscode.new_problem', project.new_problem);
+	vscode.commands.registerCommand('baekjoon-vscode.delete_problem', project.delete_problem);
 
 	// template.js
 	vscode.commands.registerCommand('baekjoon-vscode.load_template', template.load);
