@@ -42,13 +42,21 @@ async function new_problem() {
 async function delete_problem(uri) {
     let problem_number = uri.fsPath.split('/').slice(-1)[0].split('.')[0];
     
-    const files = await vscode.workspace.findFiles(`.**/2253*`);
+    const files = await vscode.workspace.findFiles(`.**/${problem_number}*`);
     for(let i = 0; i < files.length; i++) {
         console.log(files[i].fsPath);
         vscode.workspace.fs.delete(vscode.Uri.file(files[i].fsPath));
     }
-    vscode.workspace.fs.delete(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.output/${problem_number}`));
-    vscode.workspace.fs.delete(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/problems/${problem_number}.baekjoon.cpp`));
+    try {
+        vscode.workspace.fs.delete(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.output/${problem_number}`));
+    } catch(e) {
+        console.log(e);
+    }
+    try {
+        vscode.workspace.fs.delete(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/problems/${problem_number}.baekjoon.cpp`));
+    } catch(e) {
+        console.log(e);
+    }
 }
 
 module.exports = {

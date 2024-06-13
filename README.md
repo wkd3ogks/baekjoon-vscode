@@ -2,8 +2,6 @@
 
 Baekjoon Online Judge를 활용해 알고리즘을 학습하는데 있어 여러 편의사항을 제공하는 Visual Studio Code 확장 프로그램. 
 
-This is the README for your extension "baekjoon-vscode". After writing up a brief description, we recommend including the following sections.
-
 ## Features
 
 - 테스트케이스 자동 점검
@@ -24,6 +22,9 @@ For example if there is an image subfolder under your extension project workspac
 - chrome: 125.0.6422.112
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+
+## Support Language
+- C++
 
 ## Source files
     .
