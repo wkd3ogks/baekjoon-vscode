@@ -2,6 +2,8 @@ const vscode = require('vscode');
 const { Builder, Browser, By } = require('selenium-webdriver');
 const Chrome = require('selenium-webdriver/chrome');
 
+const path = require('path'); 
+
 async function load(problem_number) {
     if(problem_number == undefined) {
         problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
@@ -56,10 +58,12 @@ async function load(problem_number) {
 
 async function run() {
     let terminal = vscode.window.createTerminal('Run Testcase');
-    let problem_number = vscode.window.activeTextEditor.document.fileName.split('/').slice(-1)[0].split('.')[0];
+    let problem_number = path.parse(vscode.window.activeTextEditor.document.fileName).base.split('.')[0];
+    console.log(problem_number)
     try {
-        //terminal.show();
+        terminal.show();
         terminal.sendText(`g++ ${vscode.window.activeTextEditor.document.fileName} -o ./.output/${problem_number}`);
+        console.log(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}.info`))
         let testcase_size = parseInt(new TextDecoder().decode(await vscode.workspace.fs.readFile(
             vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}.info`)
         )));
@@ -82,7 +86,8 @@ async function run() {
             for(let i = 1; i <= testcase_size; i++) {
                 let user_output = null;
 
-                terminal.sendText(`./.output/${problem_number} > ./.result/${problem_number}-${i}.txt`);
+                if(i == 1) terminal.sendText('cd ./.output');
+                terminal.sendText(`${problem_number} > ../.result/${problem_number}-${i}.txt`);
                 terminal.sendText(new TextDecoder().decode(await vscode.workspace.fs.readFile(
                     vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-${i}.input`)
                 )));

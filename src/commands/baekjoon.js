@@ -4,7 +4,10 @@ const Chrome = require('selenium-webdriver/chrome');
 
 const error = require('../error.js');
 
+const path = require('path'); 
+
 async function login() {
+    console.log(this.globalState.get("user_data_dir"))
     const options = new Chrome.Options();
     options.addArguments(
         `user-agent=${this.globalState.get("user_agent")}`,
@@ -56,7 +59,7 @@ async function login() {
 }
 
 async function submit() {
-    let problem_number = vscode.window.activeTextEditor.document.fileName.split('/').slice(-1)[0].split('.')[0];
+    let problem_number = path.parse(vscode.window.activeTextEditor.document.fileName).base.split('.')[0];
     const options = new Chrome.Options();
     options.addArguments(
         `user-agent=${this.globalState.get("user_agent")}`,
