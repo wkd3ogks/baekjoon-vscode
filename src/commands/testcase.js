@@ -138,22 +138,40 @@ async function run() {
 }
 
 async function add() {
-    let problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
-    const panel = vscode.window.createWebviewPanel(
-        'add_testcase', // Identifies the type of the webview. Used internally
-        '테스트케이스 추가', // Title of the panel displayed to the user
-        vscode.ViewColumn.One, // Editor column to show the new webview panel in.
-        {enableScripts: true} // Webview options. More on these later.
-      );
-      panel.webview.html = getWebviewContent(problem_number);
-
-      panel.webview.onDidReceiveMessage(
-        message => {
-            console.log(message);
-        },
-        undefined,
-        this.subscriptions
-      );
+    try {
+        let problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
+        let testcase_size = parseInt(await new TextDecoder().decode(await vscode.workspace.fs.readFile(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}.info`))));
+        const panel = vscode.window.createWebviewPanel(
+            'add_testcase', // Identifies the type of the webview. Used internally
+            '테스트케이스 추가', // Title of the panel displayed to the user
+            vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+            {enableScripts: true} // Webview options. More on these later.
+          );
+          panel.webview.html = getWebviewContent(problem_number);
+    
+          panel.webview.onDidReceiveMessage(
+            async (message) => {
+                testcase_size += 1;
+                await vscode.workspace.fs.writeFile(
+                    vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}.info`),
+                    new TextEncoder().encode(testcase_size.toString())
+                );
+                await vscode.workspace.fs.writeFile(
+                    vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-${testcase_size}.input`),
+                    new TextEncoder().encode(message.input)
+                );
+                await vscode.workspace.fs.writeFile(
+                    vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, `/.testcase/${problem_number}-${testcase_size}.output`),
+                    new TextEncoder().encode(message.output)
+                );
+                vscode.window.showInformationMessage("테스트케이스를 생성했습니다.")
+            },
+            undefined
+          );
+    } catch(e) {
+        vscode.window.showErrorMessage("테스트케이스 생성에 실패했습니다.")
+    }
+    
 
 }
 
@@ -203,7 +221,7 @@ function getWebviewContent(problem_number) {
         const vscode = acquireVsCodeApi();
         const button = document.querySelector('button');
         button.addEventListener('click', () => {
-            vscode.postMessage({input: document.querySelector('textarea').value})
+            vscode.postMessage({input: document.querySelector('#input').value, output: document.querySelector('#output').value});
         });
     </script>
   </body>
