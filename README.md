@@ -3,7 +3,8 @@
 Baekjoon Online Judge를 활용해 알고리즘을 학습하는데 있어 여러 편의사항을 제공하는 Visual Studio Code 확장 프로그램. 
 
 ## Features
-- 문제 삭제(결과물 및 테스트케이스 전체 삭제)
+
+#### 문제 삭제(실행파일, 결과파일 및 테스트케이스들을 포함해 삭제합니다.)
 ![Delete Problem](./gif/delete_problem.gif)
 
 - 테스트케이스 자동 점검
