@@ -5,7 +5,7 @@ Baekjoon Online Judge를 활용해 알고리즘을 학습하는데 있어 여러
 ## Features
 
 #### 프로젝트 생성(사용에 필요한 폴더 구조를 생성합니다)
-![New Project]
+![New Project](.gif/new_project.gif)
 
 #### 문제 생성(테스트케이스도 로드합니다)
 ![New Problem](.gif/new_problem.gif)
