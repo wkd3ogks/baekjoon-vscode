@@ -13,6 +13,12 @@
   "main": "./src/extension.js",
   "contributes": {
     "menus" : {
+      "commandPalette": [
+        {
+          "command": "baekjoon-vscode.delete_problem",
+          "when": "false"
+        }
+      ],
       "editor/title/run": [
         {
           "command": "baekjoon-vscode.run_testcase"
@@ -26,7 +32,7 @@
           "command": "baekjoon-vscode.new_problem"
         },
         {
-          "when": "resourceExtname== .cpp",
+          "when": "resourceExtname==.cpp",
           "command": "baekjoon-vscode.delete_problem"
         }
       ]

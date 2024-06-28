@@ -3,6 +3,8 @@
 Baekjoon Online Judge를 활용해 알고리즘을 학습하는데 있어 여러 편의사항을 제공하는 Visual Studio Code 확장 프로그램. 
 
 ## Features
+- 문제 삭제(결과물 및 테스트케이스 전체 삭제)
+![Delete Problem](./gif/delete_problem.gif)
 
 - 테스트케이스 자동 점검
 - 코드 템플릿 적용
@@ -22,6 +24,9 @@ For example if there is an image subfolder under your extension project workspac
 - chrome: 125.0.6422.112
 
 If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+
+## Support Platform
+- window
 
 ## Support Language
 - C++

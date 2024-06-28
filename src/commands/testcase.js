@@ -42,7 +42,7 @@ async function load(problem_number) {
                         vscode.Uri.joinPath(vscode.Uri.joinPath(vscode.workspace.workspaceFolders[0].uri, '.testcase'),
                         `${problem_number}-${(i / 2) + 1}.output`), new TextEncoder().encode(await testcases[i + 1].getText())
                     );
-                    vscode.window.showInformationMessage("성공적으로 테스트케이스를 로드했습니다.");
+                    if(problem_number == undefined) vscode.window.showInformationMessage("성공적으로 테스트케이스를 로드했습니다.");
                 }
             } catch(e) {
                 console.log("Error!");
@@ -186,24 +186,29 @@ function getWebviewContent(problem_number) {
   <head>
       <title>테스트케이스 추가</title>
       <style>
+        .container {
+            width: 50vw;
+            box-sizing: border-box;
+        }
         html {
             font-size: 16px;
-        }
-        .container {
-            width:100vw;
         }
         h5 {
             margin-bottom: 0.5rem;
         }
+        .button-wrapper {
+            display: flex;
+            justify-content: end;
+            margin-top: 0.5rem;
+        }
         button {
-            width: 80vw;
-            height: 2rem;
+            padding: 0.5rem;
             background-color: var(--vscode-button-background);
             color: var(--vscode-button-foreground);
             border: 0;
         }
         textarea {
-            width: 80vw;
+            width: 100%;
             background: var(--vscode-editor-background);
             color: var(--vscode-editor-foreground);
         }
@@ -211,16 +216,18 @@ function getWebviewContent(problem_number) {
   </head>
   <body>
     <div class="container">
-      <h2>${problem_number} 테스트 케이스 추가</h2>
+      <h2>${problem_number}번 테스트 케이스 추가</h2>
       <div>
         <h5>입력</h5>
-        <textarea id="input"></textarea>
+        <textarea id="input" rows=10></textarea>
       </div>
       <div>
         <h5>출력</h5>
-        <textarea id="output"></textarea>
+        <textarea id="output" rows=10></textarea>
       </div>
-      <button>생성하기</button>
+      <div class="button-wrapper">
+        <button>생성하기</button>
+      </div>
     </div>
     <script>
         const vscode = acquireVsCodeApi();

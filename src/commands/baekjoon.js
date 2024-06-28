@@ -1,10 +1,9 @@
 const vscode = require('vscode');
 const { Builder, Browser, By } = require('selenium-webdriver');
 const Chrome = require('selenium-webdriver/chrome');
+const path = require('path'); 
 
 const error = require('../error.js');
-
-const path = require('path'); 
 
 async function login() {
     console.log(this.globalState.get("user_data_dir"))
@@ -24,7 +23,7 @@ async function login() {
         if(!(await driver.getCurrentUrl()).includes('/login')) {
             throw Error(error.login.aleady_login.content)
         }
-        const actions =  driver.actions({async: true});
+        const actions =  driver.actions({ async: true });
         await actions.move({origin: await driver.findElement(By.name('auto_login'))}).click().perform();
 
         let username = undefined;
@@ -33,7 +32,7 @@ async function login() {
                 try {
                     if((await driver.getCurrentUrl()).includes('error')) {
                         clearInterval(find_result);
-                        reject()
+                        reject();
                     }
                     username = await driver.findElement(By.className("username"));
                     resolve({interval: find_result, username: await username.getText()});
