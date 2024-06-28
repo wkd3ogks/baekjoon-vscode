@@ -16,10 +16,10 @@ async function create() {
             return;
         }
         
-        vscode.commands.executeCommand("vscode.openFolder", vscode.Uri.file(project_uri[0].path));
         for(let i = 0; i < directories.length; i++) {
             await vscode.workspace.fs.createDirectory(vscode.Uri.joinPath(project_uri[0], directories[i]));
         }
+        vscode.commands.executeCommand("vscode.openFolder", vscode.Uri.file(project_uri[0].path));
     } catch(e) {
         vscode.window.showErrorMessage("오류가 발생했습니다");
     }
@@ -29,7 +29,7 @@ async function new_problem() {
     try {
         let problem_number = await vscode.window.showInputBox({"placeHolder": "문제 번호를 입력해주세요."});
         if(problem_number == undefined) {
-            
+
             throw Error("파일 생성을 취소했습니다.");
         }
         if(!vscode.workspace.fs.isWritableFileSystem('file')) {
@@ -49,7 +49,7 @@ async function new_problem() {
 }
 
 async function delete_problem(uri) {
-    let problem_number = path.parse(uri.fsPath).base.split('.')[0];
+    let problem_number = path.parse(uri.fsPath).base.split('.')[0]; // TODO
     const files = await vscode.workspace.findFiles(`.**/${problem_number}*`); // .XXX 폴더 내 문제 번호를 포함하는 파일 전체 탐색
     try {
         for(let i = 0; i < files.length; i++) vscode.workspace.fs.delete(vscode.Uri.file(files[i].fsPath));
